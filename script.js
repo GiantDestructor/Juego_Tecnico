@@ -41,29 +41,118 @@ var fin_h = 0;
 
 var fin_nivel = [{ }];
 
+//creacion de muros
+
+var muros = [{}];
 
 
 
 var nivelActual = 0;
 
-var niveles = [{
+var niveles = [{//nivel 1
 
     spawnx: 0,
     spawny: canvas.height/2,
-    enemigos: [{ x: 200, y: 20, dx: 0, dy: 2, radio: 15 },
-              {x: 500, y: 30, dx: 0, dy: 5, radio: 15}
+    enemigos:
+        [
+        {x: 150, y: 20, dx: 0, dy: 20, radio: 15},
+        { x: 200, y: 20, dx: 0, dy: 2, radio: 15 },
+        { x: 500, y: 30, dx: 0, dy: 5, radio: 15 },
+        { x: 350, y: 20, dx: 0, dy: 6, radio: 15 },
+        { x: 600, y: 200, dx: 0, dy: 10, radio: 15 },
+        
+              
     ],
 
-    fin_nivel: [{x: canvas.width - 50, y:  canvas.height/2, w: 50, h: 50}],
+    fin_nivel: [{ x: canvas.width - 50, y: canvas.height / 2, w: 50, h: 50 }],
+    
+    muros:[{x: canvas.width/2 , y: 90 , w: canvas.width, h: 50}]
     
 },
+    //nivel 2
     {   
         spawnx: 0,
-        spawny: canvas.height/2,
-        enemigos: [{ x: 300, y: 500, dx: 10, dy: 0, radio: 20 }],
-        fin_nivel: [{x: canvas.width - 50, y:  canvas.height/2, w: 50, h: 50}]
+    spawny: canvas.height/2,
+
+    enemigos: [
+        {x:250, y:100, dx:0, dy:6, radio:15},
+        {x:400, y:300, dx:0, dy:-6, radio:15}
+    ],
+
+    muros: [
+        {x:200, y:0, w:40, h:180},
+        {x:200, y:260, w:40, h:300}
+    ],
+
+    fin_nivel: [
+        {x:canvas.width-50, y:canvas.height/2, w:50, h:50}
+    ]
         
-    }]
+    },
+    //nivel 3
+    {
+        spawnx: 0,
+        spawny: canvas.height/2,
+
+        enemigos: [
+            {x:150, y:150, dx:5, dy:0, radio:15},
+            {x:600, y:250, dx:-5, dy:0, radio:15},
+            {x:400, y:50, dx:0, dy:5, radio:15}
+        ],
+
+        muros: [],
+
+        fin_nivel: [
+            {x:canvas.width-50, y:canvas.height/2, w:50, h:50}
+        ]
+    },
+    //Nivel 4
+    {
+        spawnx: 20,
+        spawny: 20,
+
+        enemigos: [
+            {x: 10, y:canvas.height/2, dx:6, dy:0, radio:15},
+            {x:350, y:100, dx:0, dy:4, radio:15},
+            {x:500, y:250, dx:0, dy:4, radio:15}
+        ],
+
+        muros: [
+            {x:100, y:0, w:30, h:250},
+            {x:250, y:150, w:30, h:500},
+            {x:400, y:0, w:30, h:250},
+            {x:550, y:150, w:30, h:500}
+        ],
+
+        fin_nivel: [
+            {x:canvas.width-60, y:canvas.height-60, w:50, h:50}
+        ]
+    },
+    //Nivel 5
+    {
+        spawnx: 0,
+        spawny: canvas.height/2,
+
+        enemigos: [
+            {x:100, y:50, dx:0, dy:8, radio:15},
+            {x:200, y:250, dx:0, dy:-8, radio:15},
+            {x:300, y:100, dx:0, dy:10, radio:15},
+            {x:400, y:300, dx:0, dy:-10, radio:15},
+            {x:500, y:50, dx:0, dy:12, radio:15},
+            {x:600, y:250, dx:0, dy:-12, radio:15}
+        ],
+
+        muros: [
+            {x:330, y:0, w:20, h:180},
+            {x:330, y:260, w:20, h:300}
+        ],
+
+        fin_nivel: [
+            {x:canvas.width-50, y:canvas.height/2, w:50, h:50}
+        ]
+    }
+
+    ]
 
 function cargar_nivel(numero)
 {
@@ -73,6 +162,7 @@ function cargar_nivel(numero)
     PlayerY = nivel.spawny
     enemigos = nivel.enemigos;
     fin_nivel = nivel.fin_nivel;
+    muros = nivel.muros;
 
  }
 function draw()
@@ -85,7 +175,23 @@ function draw()
     for (i = 0; i < enemigos.length; i++)
     {
         let enemigo = enemigos[i];
+        for (j = 0; j < muros.length; j++)
+        {
+            let muro = muros[j]
+            if (
+                // Izquierda de circulo menor que borde derecho jugador
+                enemigo.y + enemigo.radio < muro.y + muro.h && // Arriba de circulo mayor que borde inferior
+                enemigo.y - enemigo.radio > muro.y &&
+                
+                enemigo.x - enemigo.radio > muro.x &&
+                enemigo.x + enemigo.radio < muro.x + muro.w
+            )
+            {
+                enemigo.dy = -enemigo.dy;
+            }
+           
 
+         }
         //Hacer que la bola vaya de arriba para abajo
         enemigo.y += enemigo.dy;
 
@@ -109,7 +215,7 @@ function draw()
         {
             enemigo.dx = -enemigo.dx;
         }
-
+        //imprime enemigo
         ctx.beginPath();
         ctx.arc(enemigo.x, enemigo.y, enemigo.radio, 0, Math.PI * 2);
         ctx.fillStyle = "#0095DD";
@@ -159,6 +265,30 @@ function draw()
              }
         }
     }
+
+    //imprime muros
+    for (i = 0; i < muros.length; i++)
+    {
+        let muro = muros[i];
+        ctx.beginPath();
+        ctx.rect(muro.x, muro.y, muro.w, muro.h);
+        ctx.fillStyle= "#6B1B0D";
+        ctx.fill()
+        ctx.closePath();
+
+        if (
+         PlayerX < muro.x + muro.w &&
+        PlayerX + player_width > muro.x &&
+        PlayerY < muro.y + muro.h &&
+        PlayerY + player_height > muro.y
+        ) {
+            player_speed = -player_speed
+        }
+
+     }
+
+    ctx.font = "20px Arial";
+    ctx.fillText("¡Evita obstaculos y llega al destino!",canvas.width/3,20);
     drawplayer();
 
         
@@ -169,15 +299,82 @@ function draw()
     
     //Declara movimientos del jugador eje x
     if (rightPressed && PlayerX < canvas.width - player_width - 10) {
+
         PlayerX += player_speed;
+        for (i = 0; i < muros.length; i++)
+    {
+        let muro = muros[i];
+
+        if (
+         PlayerX < muro.x + muro.w &&
+        PlayerX + player_width > muro.x &&
+        PlayerY < muro.y + muro.h &&
+        PlayerY + player_height > muro.y
+        ) {
+            PlayerX -= player_speed
+        }
+
+     }
+        
     } else if (leftPresed && PlayerX > 0) {
+
         PlayerX -= player_speed;
+        
+        for (i = 0; i < muros.length; i++)
+    {
+        let muro = muros[i];
+
+        if (
+         PlayerX < muro.x + muro.w &&
+        PlayerX + player_width > muro.x &&
+        PlayerY < muro.y + muro.h &&
+        PlayerY + player_height > muro.y
+        ) {
+            PlayerX += player_speed
+        }
+
+     }
     }
     //Declara movimientos del jugador eje Y
     if (upPressed && PlayerY > 0 + player_height) {
-        PlayerY -= player_speed;
-    } else if (downPressed && PlayerY + player_height < canvas.height - 10) {
+
+        PlayerY -= player_speed; 
+
+        for (i = 0; i < muros.length; i++)
+    {
+        let muro = muros[i];
+
+        if (
+         PlayerX < muro.x + muro.w &&
+        PlayerX + player_width > muro.x &&
+        PlayerY < muro.y + muro.h &&
+        PlayerY + player_height > muro.y
+        ) {
+            PlayerY += player_speed
+        }
+
+     }   
+        
+    }
+    
+    
+
+    else if (downPressed && PlayerY + player_height < canvas.height - 10) {
         PlayerY += player_speed;
+        for (i = 0; i < muros.length; i++)
+    {
+        let muro = muros[i];
+
+        if (
+         PlayerX < muro.x + muro.w &&
+        PlayerX + player_width > muro.x &&
+        PlayerY < muro.y + muro.h &&
+        PlayerY + player_height > muro.y
+        ) {
+            PlayerY -= player_speed
+        }
+
+     }   
     }
 
     
