@@ -24,7 +24,10 @@ var spawny = 0
 //Velocidad de Jugador
 var player_speed = 7
 
-
+//Atributos para poner texto
+var texto1 = "¡Evita obstaculos y llega al destino!"
+var texto_x = canvas.width /10;
+var texto_y = 60
 
 
 // ejes de spawn de enemigos
@@ -273,7 +276,8 @@ var niveles = [{//nivel 1
     }
 
     ]
-
+//Variable que detecta el fin del juego
+var fin_juego = false;
 //Asigna a las variables globales los valores de la variable "niveles"
 function cargar_nivel(numero)
 {
@@ -294,6 +298,13 @@ function draw()
     //Limpia el lienzo 
     ctx.clearRect(0, 0, canvas.width + 12, canvas.height);
     
+
+    if (fin_juego)
+    {
+        texto("Finalizaste el juego!", canvas.width/4, canvas.height / 2)   
+        return;
+     }
+
     //Imprime los enemigos
     for (i = 0; i < enemigos.length; i++)
     {   
@@ -402,8 +413,9 @@ function draw()
             //Si ya no hay mas niveles, poner que ganaste el juego
             if (nivelActual >= niveles.length)
             {   
-                location.reload()
-                alert("GANASTE EL JUEGO!")
+                fin_juego = true;
+                 
+                 
             }
             //Si hay mas niveles, se carga el siguente
             else
@@ -428,8 +440,8 @@ function draw()
      }
     
     //texto con instrucciones de que hacer durante el juego
-    ctx.font = "20px Arial";
-    ctx.fillText("¡Evita obstaculos y llega al destino!",canvas.width/3,20);
+    
+    
     drawplayer();
 
     //Declara movimientos del jugador eje x
@@ -516,6 +528,13 @@ function draw()
      }   
     }
 }
+
+function texto(texto,texto_x,texto_y)
+{
+    ctx.font = "50px Arial";
+    ctx.fillStyle = "blue";
+    ctx.fillText(texto,texto_x,texto_y);
+ }
 
 //Funcion que dibuja al jugador
 function drawplayer() {
