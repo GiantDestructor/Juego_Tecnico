@@ -1,47 +1,63 @@
+/* Aplica estos estilos a todos los elementos de la página */
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;                 /* Elimina el margen predeterminado */
+    padding: 0;                /* Elimina el relleno predeterminado */
+    box-sizing: border-box;    /* Hace que el ancho y alto incluyan borde y padding */
 }
 
+/* Contenedor principal donde se encuentra el juego */
 #game
 {
-   width: 900px;
-    height: 540px;
-    border: 3px solid #0f1616;
-    border-radius: 15px;
-    position: relative;
-    overflow: hidden;
+    width: 900px;              /* Ancho del área del juego */
+    height: 540px;             /* Alto del área del juego */
 
-    background: rgba(0,0,0,0.3);
-    box-shadow: 0 0 20px #121d1d;
+    border: 3px solid #0f1616; /* Borde de 3 píxeles color oscuro */
+    border-radius: 15px;       /* Esquinas redondeadas */
+
+    position: relative;        /* Permite posicionar elementos internos de forma absoluta */
+    overflow: hidden;          /* Oculta cualquier objeto que salga del área del juego */
+
+    background: rgba(0,0,0,0.3); /* Fondo negro con 30% de transparencia */
+    box-shadow: 0 0 20px #121d1d; /* Agrega un efecto de sombra alrededor del contenedor */
 }
 
+/* Configuración del elemento canvas donde se dibuja el juego */
 canvas
 {
-    background-color: aquamarine;
-    display: block;
-    margin: 0 auto;
+    background-color: aquamarine; /* Color de fondo del canvas */
+    display: block;               /* Convierte el canvas en un elemento de bloque */
+    margin: 0 auto;               /* Lo centra horizontalmente */
 }
 
+/* Estilos generales del cuerpo de la página */
 body
-{   
-    text-align: center;
-    height: 100vh;
-    overflow: hidden;
+{
+    text-align: center;       /* Centra el contenido de texto */
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    height: 100vh;            /* Hace que el body ocupe toda la altura de la ventana */
+    overflow: hidden;         /* Evita que aparezcan barras de desplazamiento */
+
+    display: flex;            /* Activa Flexbox */
+    flex-direction: column;   /* Organiza los elementos en una columna */
+    align-items: center;      /* Centra los elementos horizontalmente */
+    justify-content: center;  /* Centra los elementos verticalmente */
+    background-image: url(https://i.redd.it/61c1c5mkzum81.png);   /* Imagen que se utilizará como fondo */
+    background-size: cover; /* Hace que la imagen cubra toda la pantalla manteniendo su proporción */
+    background-position: center; /* Centra la imagen en la pantalla */
+    background-repeat: no-repeat; /* Evita que la imagen se repita si es más pequeña que el área */
+    
 }
 
+/* Configuración de la imagen del jugador */
 #imagen
 {
-    height: 50px;
-    width: 50px;
-    position: absolute;
-    transition: 0.3s;
-    top: 270px;
-    left: 0px;
+    height: 50px;             /* Altura de la imagen */
+    width: 50px;              /* Anchura de la imagen */
+
+    position: absolute;       /* Permite mover la imagen libremente dentro de #game */
+
+    transition: 0.3s;         /* Suaviza los cambios de posición durante 0.3 segundos */
+
+    top: 270px;               /* Posición inicial desde la parte superior */
+    left: 0px;                /* Posición inicial desde el borde izquierdo */
 }
